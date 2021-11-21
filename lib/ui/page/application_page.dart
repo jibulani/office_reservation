@@ -3,36 +3,31 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_event.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_state.dart';
-import 'package:office_reservation/repository/first_page_repository.dart';
+import 'package:office_reservation/repository/locations_page_repository.dart';
 import 'package:office_reservation/repository/second_page_repository.dart';
-import 'package:office_reservation/ui/page/first_page.dart';
+import 'package:office_reservation/ui/page/locations_page.dart';
 import 'package:office_reservation/ui/page/second_page.dart';
 
-class MainPage extends StatelessWidget {
+class ApplicationPage extends StatelessWidget {
   static const Color themeColor = Color(0xFF1D1D1D);
   static const Color greyColor = Color(0xFFAEAFB7);
-  final FirstPageRepository firstPageRepository;
+  final LocationsPageRepository locationsPageRepository;
   final SecondPageRepository secondPageRepository;
-  const MainPage({Key? key, required this.firstPageRepository, required this.secondPageRepository}) : super(key: key);
+  const ApplicationPage({Key? key, required this.locationsPageRepository, required this.secondPageRepository}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var bloc = BottomNavigationBloc(firstPageRepository, secondPageRepository);
+    var bloc = BottomNavigationBloc(locationsPageRepository, secondPageRepository);
     bloc.add(PageTapped(0));
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: themeColor,
-        centerTitle: true,
-        title: Text('Бронирование места в офисе',),
-      ),
       body: BlocBuilder(
         bloc: bloc,
         builder: (BuildContext context, BottomNavigationState state) {
           if (state is PageLoading) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (state is FirstPageLoaded) {
-            return FirstPage(text: state.text,);
+          if (state is LocationsPageLoaded) {
+            return LocationsPage(locations: state.locations,);
           }
           if (state is SecondPageLoaded) {
             return SecondPage(number: state.number,);

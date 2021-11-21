@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_event.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_state.dart';
-import 'package:office_reservation/repository/first_page_repository.dart';
+import 'package:office_reservation/repository/locations_page_repository.dart';
+import 'package:office_reservation/repository/model/location.dart';
 import 'package:office_reservation/repository/second_page_repository.dart';
 
 class BottomNavigationBloc
     extends Bloc<BottomNavigationEvent, BottomNavigationState> {
-  final FirstPageRepository firstPageRepository;
+  final LocationsPageRepository locationsPageRepository;
   final SecondPageRepository secondPageRepository;
   int currentIndex = 0;
 
-  BottomNavigationBloc(this.firstPageRepository, this.secondPageRepository)
+  BottomNavigationBloc(this.locationsPageRepository, this.secondPageRepository)
       : super(PageLoading()) {
     on<PageTapped>(
         (event, emit) async {
@@ -18,8 +19,8 @@ class BottomNavigationBloc
           emit(CurrentIndexChanged(currentIndex));
           emit(PageLoading());
           if (event.index == 0) {
-            String? data = await _getFirstPageData();
-            emit(FirstPageLoaded(data ?? "default data"));
+            List<Location>? data = await _getFirstPageData();
+            emit(LocationsPageLoaded(data ?? []));
           }
           if (event.index == 1) {
             int? data = await _getSecondPageData();
@@ -29,9 +30,9 @@ class BottomNavigationBloc
     );
   }
 
-  Future<String?> _getFirstPageData() async {
-    await firstPageRepository.fetchData();
-    String? data = firstPageRepository.data;
+  Future<List<Location>?> _getFirstPageData() async {
+    await locationsPageRepository.fetchData();
+    List<Location>? data = locationsPageRepository.data;
     return data;
   }
 

@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:office_reservation/repository/model/location.dart';
 
 abstract class BottomNavigationState extends Equatable {
   const BottomNavigationState();
@@ -25,16 +26,16 @@ class PageLoading extends BottomNavigationState {
   String toString() => 'PageLoading';
 }
 
-class FirstPageLoaded extends BottomNavigationState {
-  final String text;
+class LocationsPageLoaded extends BottomNavigationState {
+  final List<Location> locations;
 
-  const FirstPageLoaded(this.text);
-
-  @override
-  List<Object> get props => [text];
+  const LocationsPageLoaded(this.locations);
 
   @override
-  String toString() => 'FirstPageLoaded with text: $text';
+  List<Object> get props => [locations];
+
+  @override
+  String toString() => 'LocationsPageLoaded with locations: $locations';
 }
 
 class SecondPageLoaded extends BottomNavigationState {

@@ -5,7 +5,7 @@ class SecondPageRepository {
 
   Future<void> fetchData() async {
     // simulate real data fetching
-    await Future.delayed(const Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 600)); // TODO: get reservations from db
     // store dummy data
     _data = Random().nextInt(1000);
   }
