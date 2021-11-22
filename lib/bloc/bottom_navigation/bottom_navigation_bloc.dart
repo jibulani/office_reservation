@@ -3,12 +3,13 @@ import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_even
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_state.dart';
 import 'package:office_reservation/repository/locations_page_repository.dart';
 import 'package:office_reservation/repository/model/location.dart';
-import 'package:office_reservation/repository/second_page_repository.dart';
+import 'package:office_reservation/repository/model/reservation.dart';
+import 'package:office_reservation/repository/reservations_page_repository.dart';
 
 class BottomNavigationBloc
     extends Bloc<BottomNavigationEvent, BottomNavigationState> {
   final LocationsPageRepository locationsPageRepository;
-  final SecondPageRepository secondPageRepository;
+  final ReservationsPageRepository secondPageRepository;
   int currentIndex = 0;
 
   BottomNavigationBloc(this.locationsPageRepository, this.secondPageRepository)
@@ -19,26 +20,26 @@ class BottomNavigationBloc
           emit(CurrentIndexChanged(currentIndex));
           emit(PageLoading());
           if (event.index == 0) {
-            List<Location>? data = await _getFirstPageData();
-            emit(LocationsPageLoaded(data ?? []));
+            List<Location> data = await _getLocationsPageData();
+            emit(LocationsPageLoaded(data));
           }
           if (event.index == 1) {
-            int? data = await _getSecondPageData();
-            emit(SecondPageLoaded(data ?? 0));
+            List<Reservation> data = await _getReservationsPageData();
+            emit(ReservationsPageLoaded(data));
           }
         }
     );
   }
 
-  Future<List<Location>?> _getFirstPageData() async {
+  Future<List<Location>> _getLocationsPageData() async {
     await locationsPageRepository.fetchData();
-    List<Location>? data = locationsPageRepository.data;
+    List<Location> data = locationsPageRepository.data;
     return data;
   }
 
-  Future<int?> _getSecondPageData() async {
+  Future<List<Reservation>> _getReservationsPageData() async {
     await secondPageRepository.fetchData();
-    int? data = secondPageRepository.data;
+    List<Reservation> data = secondPageRepository.data;
     return data;
   }
 }

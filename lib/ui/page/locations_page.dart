@@ -18,12 +18,6 @@ class LocationsPage extends StatelessWidget {
       ),
       body: Center(
         child: ListView.builder(
-          padding: EdgeInsets.only(bottom: 50),
-          // separatorBuilder: (BuildContext context, int index) => Divider(
-          //   color: Colors.black26,
-          //   thickness: 1,
-          //   height: 1,
-          // ),
           itemBuilder: (context, index) {
             return Container(
               decoration: BoxDecoration(
@@ -45,7 +39,14 @@ class LocationsPage extends StatelessWidget {
               ),
               margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
               child: ListTile(
-                title: Text(locations.elementAt(index).name, style: const TextStyle(color: ApplicationPage.themeColor, fontWeight: FontWeight.bold),),
+                title: Text(
+                  locations.elementAt(index).name,
+                  style: const TextStyle(
+                    color: ApplicationPage.themeColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
               ),
             );
           },

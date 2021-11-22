@@ -12,5 +12,5 @@ class LocationsPageRepository {
     _data = locations;
   }
 
-  List<Location>? get data => _data;
+  List<Location> get data => _data;
 }
