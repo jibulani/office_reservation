@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:office_reservation/repository/model/location.dart';
 import 'package:office_reservation/ui/page/application_page.dart';
+import 'package:office_reservation/ui/page/reserve_location_place_page.dart';
 
 class LocationsPage extends StatelessWidget {
   final List<Location> locations;
@@ -47,6 +48,14 @@ class LocationsPage extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ReserveLocationPlacePage(location: locations.elementAt(index)),
+                    ),
+                  );
+                },
               ),
             );
           },
