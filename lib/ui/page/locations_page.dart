@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:office_reservation/repository/model/location.dart';
+import 'package:office_reservation/repository/reserve_location_place_repository.dart';
 import 'package:office_reservation/ui/page/application_page.dart';
 import 'package:office_reservation/ui/page/reserve_location_place_page.dart';
 
@@ -52,7 +53,10 @@ class LocationsPage extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) =>
-                          ReserveLocationPlacePage(location: locations.elementAt(index)),
+                          ReserveLocationPlacePage(
+                            location: locations.elementAt(index),
+                            reserveLocationPlaceRepository: ReserveLocationPlaceRepository(),
+                          ),
                     ),
                   );
                 },
