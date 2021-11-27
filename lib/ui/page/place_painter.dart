@@ -11,10 +11,13 @@ class PlacePainter extends StatelessWidget {
   static const Color selectedPlaceColor = Color(0xFF17916B);
   static const Color reservedPlaceColor = Color(0xFFAEAFB7);
 
+  final double width;
   final List<Place> places;
   final ReservationBloc bloc;
 
-  const PlacePainter({Key? key, required this.places, required this.bloc}) : super(key: key);
+  const PlacePainter(
+      {Key? key, required this.width, required this.places, required this.bloc}
+      ) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +33,22 @@ class PlacePainter extends StatelessWidget {
 
   List<Widget> buildPlaces(BuildContext context) {
     List<Widget> placeWidgets = [];
+    var height = MediaQuery.of(context).size.height;
     for (var element in places) {
       placeWidgets.add(
           Positioned(
-              left: MediaQuery.of(context).size.width / 2 + MediaQuery.of(context).size.width*element.xCoordinateMultiplier,
-              top: MediaQuery.of(context).size.height / 2 - MediaQuery.of(context).size.height*element.yCoordinateMultiplier,
+              left: (MediaQuery.of(context).size.width / 2) + (width*element.xCoordinateMultiplier*(element.originalWidth/MediaQuery.of(context).size.width)),
+              top: (height / 2) - (height*element.yCoordinateMultiplier),
               child: Container(
                 width: MediaQuery.of(context).orientation == Orientation.portrait ?
-                MediaQuery.of(context).size.width*element.widthMultiplier : MediaQuery.of(context).size.height*element.widthMultiplier,
+                width*element.widthMultiplier * (MediaQuery.of(context).size.width/element.originalWidth) :
+                height*element.heightMultiplier * (height/element.originalHeight),
                 height: MediaQuery.of(context).orientation == Orientation.portrait ?
-                MediaQuery.of(context).size.height*element.heightMultiplier : MediaQuery.of(context).size.width*element.heightMultiplier,
+                height*element.heightMultiplier*(height/element.originalHeight) :
+                width*element.heightMultiplier * (width/element.originalWidth),
                 decoration: BoxDecoration(
-                    color: element.isSelected ? selectedPlaceColor : element.isReserved ? reservedPlaceColor : availablePlaceColor,
+                    color: element.isSelected ? selectedPlaceColor : element.isReserved ?
+                    reservedPlaceColor : availablePlaceColor,
                     borderRadius: BorderRadius.circular(5)
                 ),
                 child: MaterialButton(

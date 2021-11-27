@@ -35,18 +35,11 @@ class ReservationApproved extends ReservationEvent {
   List<Object> get props => [placeId];
 }
 
-class ContinueReservation extends ReservationEvent {
+class ReloadPlaces extends ReservationEvent {
+  final int locationId;
 
-  const ContinueReservation();
+  const ReloadPlaces(this.locationId);
 
-  // @override
-  // List<Object> get props => [];
-}
-
-class FinishReservation extends ReservationEvent {
-
-  const FinishReservation();
-
-// @override
-// List<Object> get props => [];
+  @override
+  List<Object> get props => [locationId];
 }

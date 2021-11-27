@@ -1,4 +1,3 @@
-
 class Place {
   int id;
   double xCoordinateMultiplier;
@@ -7,9 +6,19 @@ class Place {
   double widthMultiplier;
   bool isReserved;
   bool isSelected;
+  double originalHeight;
+  double originalWidth;
 
-  Place(this.id, this.xCoordinateMultiplier, this.yCoordinateMultiplier, this.heightMultiplier, this.widthMultiplier,
-      this.isReserved, this.isSelected);
+  Place(
+      this.id,
+      this.xCoordinateMultiplier,
+      this.yCoordinateMultiplier,
+      this.heightMultiplier,
+      this.widthMultiplier,
+      this.isReserved,
+      this.isSelected,
+      this.originalHeight,
+      this.originalWidth);
 
   @override
   String toString() {

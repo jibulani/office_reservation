@@ -1,11 +1,11 @@
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 
 class BottomNavigationObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
-    // TODO: implement onChange
     super.onChange(bloc, change);
-    print('${bloc.runtimeType} $change');
+    debugPrint('${bloc.runtimeType} $change');
   }
 }

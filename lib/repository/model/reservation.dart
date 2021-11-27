@@ -10,6 +10,5 @@ class Reservation {
       this.name,
       this.location,
       this.placeId,
-      this.reservationDateTime
-      );
+      this.reservationDateTime);
 }

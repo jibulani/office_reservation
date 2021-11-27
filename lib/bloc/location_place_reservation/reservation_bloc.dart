@@ -17,6 +17,12 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
           emit(PlacesLoaded(_data));
         }
     );
+    on<ReloadPlaces>((event, emit) async {
+      emit(PageLoading());
+      _data = await _reloadPlacesByLocation(event.locationId);
+      emit(PlacesLoaded(_data));
+    }
+    );
     on<PlaceTapped>((event, emit) async {
       var currentPlace = _data.firstWhere((element) => element.id == event.placeId);
       if (currentPlace.isSelected) {
@@ -36,9 +42,7 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       }
     });
     on<ReservationApproved>((event, emit) async {
-      emit(PageLoading());
       await _reservePlace(event.placeId);
-      emit(PageMenuDialog());
     });
   }
 
@@ -49,6 +53,12 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       _data = data;
     }
     return _data;
+  }
+
+  Future<List<Place>> _reloadPlacesByLocation(int locationId) async {
+    await reserveLocationPlaceRepository.fetchData(locationId);
+    List<Place> data = reserveLocationPlaceRepository.data;
+    return data;
   }
 
   Future<void> _reservePlace(int placeId) async {

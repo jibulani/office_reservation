@@ -9,26 +9,9 @@ abstract class ReservationState extends Equatable {
   List<Object> get props => [];
 }
 
-class PlaceChanged extends ReservationState {
-  final Place place;
-
-  const PlaceChanged(this.place);
-
-  @override
-  List<Object> get props => [place];
-
-  @override
-  String toString() => 'PlaceChanged to $place';
-}
-
 class PageLoading extends ReservationState {
   @override
   String toString() => 'PageLoading';
-}
-
-class PageMenuDialog extends ReservationState {
-  @override
-  String toString() => 'PageMenuDialog';
 }
 
 class PlacesLoaded extends ReservationState {

@@ -26,11 +26,7 @@ class ReservationsPage extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5)),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
@@ -67,12 +63,6 @@ class ReservationsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                // trailing: Text(
-                //   getFormattedDateTime(reservations.elementAt(index).reservationDateTime),
-                //   style: const TextStyle(
-                //     color: ApplicationPage.greyColor,
-                //   ),
-                // ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

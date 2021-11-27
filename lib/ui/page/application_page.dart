@@ -3,22 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_bloc.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_event.dart';
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_state.dart';
-import 'package:office_reservation/repository/locations_page_repository.dart';
-import 'package:office_reservation/repository/reservations_page_repository.dart';
 import 'package:office_reservation/ui/page/locations_page.dart';
 import 'package:office_reservation/ui/page/reservations_page.dart';
 
 class ApplicationPage extends StatelessWidget {
   static const Color themeColor = Color(0xFF1D1D1D);
   static const Color greyColor = Color(0xFFAEAFB7);
-  final LocationsPageRepository locationsPageRepository;
-  final ReservationsPageRepository secondPageRepository;
-  const ApplicationPage({Key? key, required this.locationsPageRepository, required this.secondPageRepository}) : super(key: key);
+  const ApplicationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var bloc = BottomNavigationBloc(locationsPageRepository, secondPageRepository);
-    bloc.add(PageTapped(0));
+    var bloc = BlocProvider.of<BottomNavigationBloc>(context);
+    bloc.add(const PageTapped(0));
     return Scaffold(
       body: BlocBuilder(
         bloc: bloc,

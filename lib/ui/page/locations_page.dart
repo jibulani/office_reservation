@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:office_reservation/repository/model/location.dart';
-import 'package:office_reservation/repository/reserve_location_place_repository.dart';
 import 'package:office_reservation/ui/page/application_page.dart';
 import 'package:office_reservation/ui/page/reserve_location_place_page.dart';
 
@@ -24,12 +23,7 @@ class LocationsPage extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(5),
-                    topRight: Radius.circular(5),
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5)
-                ),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
@@ -55,7 +49,6 @@ class LocationsPage extends StatelessWidget {
                       builder: (context) =>
                           ReserveLocationPlacePage(
                             location: locations.elementAt(index),
-                            reserveLocationPlaceRepository: ReserveLocationPlaceRepository(),
                           ),
                     ),
                   );
