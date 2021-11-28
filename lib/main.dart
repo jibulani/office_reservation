@@ -14,8 +14,7 @@ void main() {
     () => runApp(MultiBlocProvider(providers: [
       BlocProvider<BottomNavigationBloc>(
         create: (context) => BottomNavigationBloc(
-            LocationsPageRepository(), ReservationsPageRepository()
-        ),
+            LocationsPageRepository(), ReservationsPageRepository()),
       ),
       BlocProvider<ReservationBloc>(
         create: (context) => ReservationBloc(ReserveLocationPlaceRepository()),

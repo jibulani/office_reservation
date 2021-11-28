@@ -1,30 +1,27 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:office_reservation/bloc/location_place_reservation/reservation_event.dart';
 import 'package:office_reservation/bloc/location_place_reservation/reservation_state.dart';
-import 'package:office_reservation/repository/model/place.dart';
+import 'package:office_reservation/repository/model/place_info.dart';
 import 'package:office_reservation/repository/reserve_location_place_repository.dart';
 
 class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
-
   final ReserveLocationPlaceRepository reserveLocationPlaceRepository;
-  List<Place> _data = [];
+  List<PlaceInfo> _data = [];
 
   ReservationBloc(this.reserveLocationPlaceRepository) : super(PageLoading()) {
     on<LoadPlaces>((event, emit) async {
-          emit(PageLoading());
-          _data = await _getPlacesByLocation(event.locationId);
-          emit(PlacesLoaded(_data));
-        }
-    );
+      emit(PageLoading());
+      _data = await _getPlacesByLocation(event.locationId);
+      emit(PlacesLoaded(_data));
+    });
     on<ReloadPlaces>((event, emit) async {
       emit(PageLoading());
-      _data = await _reloadPlacesByLocation(event.locationId);
+      _data = await _getPlacesByLocation(event.locationId);
       emit(PlacesLoaded(_data));
-    }
-    );
+    });
     on<PlaceTapped>((event, emit) async {
-      var currentPlace = _data.firstWhere((element) => element.id == event.placeId);
+      var currentPlace =
+          _data.firstWhere((element) => element.id == event.placeId);
       if (currentPlace.isSelected) {
         emit(PageLoading());
         currentPlace.isSelected = false;
@@ -33,7 +30,8 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
         // do nothing
       } else {
         emit(PageLoading());
-        var previousSelectedPlace = _data.where((element) => element.isSelected == true);
+        var previousSelectedPlace =
+            _data.where((element) => element.isSelected == true);
         if (previousSelectedPlace.isNotEmpty) {
           previousSelectedPlace.first.isSelected = false;
         }
@@ -42,22 +40,16 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationState> {
       }
     });
     on<ReservationApproved>((event, emit) async {
+      emit(PageLoading());
       await _reservePlace(event.placeId);
+      _data = await _getPlacesByLocation(event.locationId);
+      emit(PlacesLoaded(_data));
     });
   }
 
-  Future<List<Place>> _getPlacesByLocation(int locationId) async {
-    if (_data.isEmpty) {
-      await reserveLocationPlaceRepository.fetchData(locationId);
-      List<Place> data = reserveLocationPlaceRepository.data;
-      _data = data;
-    }
-    return _data;
-  }
-
-  Future<List<Place>> _reloadPlacesByLocation(int locationId) async {
+  Future<List<PlaceInfo>> _getPlacesByLocation(int locationId) async {
     await reserveLocationPlaceRepository.fetchData(locationId);
-    List<Place> data = reserveLocationPlaceRepository.data;
+    List<PlaceInfo> data = reserveLocationPlaceRepository.data;
     return data;
   }
 

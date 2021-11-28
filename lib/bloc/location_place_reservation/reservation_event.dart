@@ -1,4 +1,3 @@
-
 import 'package:equatable/equatable.dart';
 
 abstract class ReservationEvent extends Equatable {
@@ -27,9 +26,10 @@ class PlaceTapped extends ReservationEvent {
 }
 
 class ReservationApproved extends ReservationEvent {
+  final int locationId;
   final int placeId;
 
-  const ReservationApproved(this.placeId);
+  const ReservationApproved(this.locationId, this.placeId);
 
   @override
   List<Object> get props => [placeId];

@@ -9,18 +9,21 @@ import 'package:office_reservation/bloc/location_place_reservation/reservation_b
 import 'package:office_reservation/bloc/location_place_reservation/reservation_event.dart';
 import 'package:office_reservation/bloc/location_place_reservation/reservation_state.dart';
 import 'package:office_reservation/repository/model/location.dart';
-import 'package:office_reservation/repository/model/place.dart';
+import 'package:office_reservation/repository/model/place_info.dart';
 import 'package:office_reservation/ui/page/application_page.dart';
 import 'package:office_reservation/ui/page/place_painter.dart';
 
 class ReserveLocationPlacePage extends StatelessWidget {
+  static const defaultLocationImage = 'graphics/default_office.png';
   final Location location;
 
-  const ReserveLocationPlacePage({Key? key, required this.location,}) : super(key: key);
+  const ReserveLocationPlacePage({
+    Key? key,
+    required this.location,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     var bloc = BlocProvider.of<ReservationBloc>(context);
     bloc.add(LoadPlaces(location.id));
     return Scaffold(
@@ -41,27 +44,26 @@ class ReserveLocationPlacePage extends StatelessWidget {
           if (state is PlacesLoaded) {
             return Stack(children: [
               Positioned(
-                  child: Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(
-                          bottom: 80, top: 20, left: 15, right: 15
-                      ),
-                      child: SizedBox(
-                        width: _getWidth(context),
-                        height: MediaQuery.of(context).size.height,
-                        child: FittedBox(
-                          child: location.imgPath == null ?
-                            const Image(image: AssetImage('graphics/default_office.png')) :
-                            Image(image: FileImage(File(location.imgPath!))),
-                        ),
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        bottom: 80, top: 20, left: 15, right: 15),
+                    child: SizedBox(
+                      width: _getWidth(context),
+                      height: MediaQuery.of(context).size.height,
+                      child: FittedBox(
+                        child: location.imgPath == null
+                            ? const Image(
+                                image: AssetImage(defaultLocationImage))
+                            : Image(image: FileImage(File(location.imgPath!))),
                       ),
                     ),
                   ),
+                ),
               ),
               PlacePainter(
                 width: _getWidth(context),
                 places: state.places,
-                bloc: bloc,
               ),
               _getBottomButton(context, state.places, bloc),
             ]);
@@ -79,7 +81,7 @@ class ReserveLocationPlacePage extends StatelessWidget {
   }
 
   Widget _getBottomButton(
-      BuildContext context, List<Place> places, ReservationBloc bloc) {
+      BuildContext context, List<PlaceInfo> places, ReservationBloc bloc) {
     var selectedPlaces = places.where((element) => element.isSelected);
     if (selectedPlaces.isEmpty) {
       return Positioned.fill(
@@ -119,7 +121,8 @@ class ReserveLocationPlacePage extends StatelessWidget {
             height: 50,
             child: OutlinedButton(
                 onPressed: () {
-                  bloc.add(ReservationApproved(selectedPlaces.first.id));
+                  bloc.add(ReservationApproved(
+                      location.id, selectedPlaces.first.id));
                   _showReservationDialog(context, bloc);
                 },
                 style: OutlinedButton.styleFrom(
@@ -134,8 +137,7 @@ class ReserveLocationPlacePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                   ),
-                )
-            ),
+                )),
           ),
         ),
       ),
@@ -144,7 +146,6 @@ class ReserveLocationPlacePage extends StatelessWidget {
 
   void _showReservationDialog(BuildContext context, ReservationBloc bloc) {
     showDialog(
-        barrierDismissible: false,
         context: context,
         builder: (context) {
           return SimpleDialog(
@@ -165,7 +166,8 @@ class ReserveLocationPlacePage extends StatelessWidget {
                 onPressed: () {
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
-                  BlocProvider.of<BottomNavigationBloc>(context).add(const PageTapped(1));
+                  BlocProvider.of<BottomNavigationBloc>(context)
+                      .add(const PageTapped(1));
                 },
                 child: _getDialogOptionContent('Завершить'),
               ),
@@ -189,12 +191,8 @@ class ReserveLocationPlacePage extends StatelessWidget {
   Widget _getDialogOptionContent(String text) {
     return Center(
         child: Text(
-          text,
-          style: const TextStyle(
-              color: Color(0xFF3E3EBA),
-              fontSize: 18
-          ),
-        )
-    );
+      text,
+      style: const TextStyle(color: Color(0xFF3E3EBA), fontSize: 18),
+    ));
   }
 }

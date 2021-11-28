@@ -3,7 +3,7 @@ import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_even
 import 'package:office_reservation/bloc/bottom_navigation/bottom_navigation_state.dart';
 import 'package:office_reservation/repository/locations_page_repository.dart';
 import 'package:office_reservation/repository/model/location.dart';
-import 'package:office_reservation/repository/model/reservation.dart';
+import 'package:office_reservation/repository/model/reservation_info.dart';
 import 'package:office_reservation/repository/reservations_page_repository.dart';
 
 class BottomNavigationBloc
@@ -14,21 +14,19 @@ class BottomNavigationBloc
 
   BottomNavigationBloc(this.locationsPageRepository, this.secondPageRepository)
       : super(PageLoading()) {
-    on<PageTapped>(
-        (event, emit) async {
-          currentIndex = event.index;
-          emit(CurrentIndexChanged(currentIndex));
-          emit(PageLoading());
-          if (event.index == 0) {
-            List<Location> data = await _getLocationsPageData();
-            emit(LocationsPageLoaded(data));
-          }
-          if (event.index == 1) {
-            List<Reservation> data = await _getReservationsPageData();
-            emit(ReservationsPageLoaded(data));
-          }
-        }
-    );
+    on<PageTapped>((event, emit) async {
+      currentIndex = event.index;
+      emit(CurrentIndexChanged(currentIndex));
+      emit(PageLoading());
+      if (event.index == 0) {
+        List<Location> data = await _getLocationsPageData();
+        emit(LocationsPageLoaded(data));
+      }
+      if (event.index == 1) {
+        List<ReservationInfo> data = await _getReservationsPageData();
+        emit(ReservationsPageLoaded(data));
+      }
+    });
   }
 
   Future<List<Location>> _getLocationsPageData() async {
@@ -37,9 +35,9 @@ class BottomNavigationBloc
     return data;
   }
 
-  Future<List<Reservation>> _getReservationsPageData() async {
+  Future<List<ReservationInfo>> _getReservationsPageData() async {
     await secondPageRepository.fetchData();
-    List<Reservation> data = secondPageRepository.data;
+    List<ReservationInfo> data = secondPageRepository.data;
     return data;
   }
 }

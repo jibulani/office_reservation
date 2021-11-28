@@ -1,7 +1,6 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:office_reservation/repository/model/location.dart';
-import 'package:office_reservation/repository/model/reservation.dart';
+import 'package:office_reservation/repository/model/reservation_info.dart';
 
 abstract class BottomNavigationState extends Equatable {
   const BottomNavigationState();
@@ -40,7 +39,7 @@ class LocationsPageLoaded extends BottomNavigationState {
 }
 
 class ReservationsPageLoaded extends BottomNavigationState {
-  final List<Reservation> reservations;
+  final List<ReservationInfo> reservations;
 
   const ReservationsPageLoaded(this.reservations);
 
@@ -48,5 +47,6 @@ class ReservationsPageLoaded extends BottomNavigationState {
   List<Object> get props => [reservations];
 
   @override
-  String toString() => 'ReservationsPageLoaded with reservations: $reservations';
+  String toString() =>
+      'ReservationsPageLoaded with reservations: $reservations';
 }
